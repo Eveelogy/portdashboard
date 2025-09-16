@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "9595:9595"
+    volumes:
+      - ./backend:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+  frontend:
+    build: ./frontend
+    ports:
+      - "5959:80"
+    depends_on:
+      - backend
+    environment:
+      - NODE_ENV=production
