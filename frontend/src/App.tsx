@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { CsvImportButton } from "./components/csv-import-button";
 import { PortTable } from "./components/port-table";
 import { FilterControls } from "./components/filter-controls";
 import { SettingsDialog } from "./components/settings-dialog";
@@ -148,10 +147,6 @@ function AppContent() {
     return filtered;
   }, [ports, filters, sortConfig]);
 
-  const handleCsvUpload = (data: PortData[]) => {
-    setPorts(data);
-  };
-
   const handleExportCsv = () => {
     const csvContent = [
       "Protocol,State,Local Address,Port,PID,Process,Docker Container",
@@ -205,7 +200,6 @@ function AppContent() {
               <RefreshCw className="h-4 w-4 mr-2" />
               Refresh
             </Button>
-            <CsvImportButton onDataLoad={handleCsvUpload} />
             <Button variant="outline" size="sm" onClick={handleExportCsv}>
               <Download className="h-4 w-4 mr-2" />
               Export CSV
