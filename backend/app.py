@@ -35,6 +35,9 @@ def get_ports():
             ports.append(row)
     return jsonify(ports)
 
+@app.route('/api/test')
+def test_route():
+    return jsonify({'status': 'test route working'})
 
 # Endpoint to update ports.csv from Docker
 @app.route('/api/update_ports', methods=['POST'])
