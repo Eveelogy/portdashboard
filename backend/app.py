@@ -77,4 +77,7 @@ def ensure_ports_csv():
 
 if __name__ == '__main__':
     ensure_ports_csv()
+    print("Available routes:")
+    for rule in app.url_map.iter_rules():
+        print(f"  {rule}")
     app.run(host='0.0.0.0', port=9595)
