@@ -1,6 +1,8 @@
 services:
   portdashboard:
-    image: ghcr.io/eveelogy/portdashboard:latest
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile
     container_name: portdashboard
     environment:
       - PYTHONUNBUFFERED=1

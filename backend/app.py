@@ -119,6 +119,19 @@ def update_ports():
     
     return jsonify({'status': 'updated', 'count': len(docker_ports)})
 
+@app.route('/api/export_db', methods=['GET'])
+def export_database():
+    """Export the SQLite database file"""
+    try:
+        return send_from_directory(
+            os.path.dirname(DB_PATH), 
+            os.path.basename(DB_PATH),
+            as_attachment=True,
+            download_name='portdashboard.db'
+        )
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 # Serve the frontend
 @app.route('/')
 def serve_frontend():

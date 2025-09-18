@@ -13,7 +13,7 @@ import {
 } from "./components/ui/card";
 import { TooltipProvider } from "./components/ui/tooltip";
 import { ThemeProvider } from "./components/theme-provider";
-import { Download, RefreshCw, Filter } from "lucide-react";
+import { Download, RefreshCw, Filter, Database } from "lucide-react";
 
 export interface PortData {
   protocol: string;
@@ -167,6 +167,15 @@ function AppContent() {
     URL.revokeObjectURL(url);
   };
 
+  const handleExportDatabase = () => {
+    const a = document.createElement("a");
+    a.href = "/api/export_db";
+    a.download = "portdashboard.db";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   const handleRefresh = async () => {
     try {
       // First, update the CSV with latest Docker data
@@ -202,7 +211,11 @@ function AppContent() {
             </Button>
             <Button variant="outline" size="sm" onClick={handleExportCsv}>
               <Download className="h-4 w-4 mr-2" />
-              Export Data
+              Export CSV
+            </Button>
+            <Button variant="outline" size="sm" onClick={handleExportDatabase}>
+              <Database className="h-4 w-4 mr-2" />
+              Export DB
             </Button>
           </div>
         </div>
