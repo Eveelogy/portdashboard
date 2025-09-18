@@ -5,10 +5,12 @@ import docker
 import json
 
 app = Flask(__name__, static_folder='static', static_url_path='')
-DB_PATH = os.path.join(os.path.dirname(__file__), 'ports.db')
+DB_PATH = os.path.join('/app/data', 'ports.db')
 
 def init_db():
     """Initialize the SQLite database with the ports table"""
+    # Ensure data directory exists
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     conn = sqlite3.connect(DB_PATH)
     cursor = conn.cursor()
     cursor.execute('''

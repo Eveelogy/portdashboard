@@ -6,7 +6,7 @@ services:
     ports:
       - "9595:9595"
     volumes:
-      - ./backend/ports.db:/app/ports.db
+      - ./data:/app/data
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - PYTHONUNBUFFERED=1
