@@ -5,7 +5,6 @@ COPY frontend/package*.json ./
 RUN npm install
 COPY frontend ./
 RUN npm run build
-RUN ls -la && ls -la build/
 
 FROM python:3.9-slim
 WORKDIR /app
