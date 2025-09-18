@@ -173,8 +173,15 @@ function AppContent() {
   };
 
   const handleRefresh = async () => {
-    const data = await fetchPortData();
-    setPorts(data);
+    try {
+      // First, update the CSV with latest Docker data
+      await fetch('/api/update_ports', { method: 'POST' });
+      // Then fetch the updated data
+      const data = await fetchPortData();
+      setPorts(data);
+    } catch (error) {
+      console.error('Error refreshing ports:', error);
+    }
   };
 
   return (
