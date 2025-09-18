@@ -43,17 +43,21 @@ def test_route():
 @app.route('/api/update_ports', methods=['POST'])
 def update_ports():
     rows = fetch_docker_ports()
-    # Read existing CSV to preserve non-docker rows
-    with open(PORTS_CSV, newline='') as csvfile:
-        reader = csv.DictReader(csvfile)
-        existing = [row for row in reader if row.get('Docker Container')]
+    # Read existing CSV to preserve non-docker rows (those without Docker Container)
+    existing = []
+    try:
+        with open(PORTS_CSV, newline='') as csvfile:
+            reader = csv.DictReader(csvfile)
+            existing = [row for row in reader if not row.get('Docker Container')]
+    except FileNotFoundError:
+        pass
     # Write new CSV
     with open(PORTS_CSV, 'w', newline='') as csvfile:
         fieldnames = ['Protocol','State','Local Address','Port','PID','Process','Docker Container']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(rows)
-        writer.writerows(existing)
+        writer.writerows(rows)  # Add fresh Docker data
+        writer.writerows(existing)  # Add non-Docker entries
     return jsonify({'status': 'updated', 'count': len(rows)})
 
 # Serve the frontend
