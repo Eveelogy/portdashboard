@@ -1,9 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, send_from_directory
 import csv
 import os
 import docker
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='')
 PORTS_CSV = os.path.join(os.path.dirname(__file__), 'ports.csv')
 
 def fetch_docker_ports():
@@ -53,6 +53,17 @@ def update_ports():
         writer.writerows(existing)
     return jsonify({'status': 'updated', 'count': len(rows)})
 
+# Serve the frontend
+@app.route('/')
+def serve_frontend():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    try:
+        return send_from_directory(app.static_folder, path)
+    except:
+        return send_from_directory(app.static_folder, 'index.html')
 
 # Ensure ports.csv exists or generate it from Docker
 def ensure_ports_csv():

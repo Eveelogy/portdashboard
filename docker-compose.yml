@@ -1,18 +1,13 @@
 version: '3.8'
 services:
-  backend:
-    build: ./backend
+  app:
+    build: 
+      context: .
+      dockerfile: backend/Dockerfile
     ports:
       - "9595:9595"
     volumes:
-      - ./backend:/app
+      - ./backend/ports.csv:/app/ports.csv
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - PYTHONUNBUFFERED=1
-  frontend:
-    build: ./frontend
-    ports:
-      - "5959:80"
-    depends_on:
-      - backend
-    environment:
-      - NODE_ENV=production
