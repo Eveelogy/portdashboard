@@ -5,15 +5,16 @@ COPY frontend/package*.json ./
 RUN npm install
 COPY frontend ./
 RUN npm run build
-RUN ls -la /frontend/
+RUN ls -la && ls -la dist/
 
 FROM python:3.9-slim
 WORKDIR /app
 COPY backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ .
-# Only copy if dist exists, otherwise create empty static dir
+# Create static directory
 RUN mkdir -p ./static
-COPY --from=frontend-build /frontend/dist ./static
+# Copy frontend build output
+COPY --from=frontend-build /frontend/dist/ ./static/
 EXPOSE 9595
 CMD ["python", "app.py"]
